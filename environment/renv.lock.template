@@ -1,0 +1,5 @@
+{
+  "R": {"Version": "4.3.0", "Repositories": [{"Name": "CRAN", "URL": "https://cloud.r-project.org"}]},
+  "Packages": {},
+  "note": "Generate the final lockfile using renv::snapshot() in the exact analysis environment."
+}

@@ -1,0 +1,1 @@
+Raw FASTQ files and full Cell Ranger outputs should normally be deposited in an appropriate data repository rather than committed to GitHub. Record accessions in `../DATA_AVAILABILITY.md` and `../DATA_MANIFEST.tsv`.

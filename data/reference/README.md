@@ -1,0 +1,1 @@
+Record the exact genome build, Cell Ranger reference version, FASTA, GTF, JASPAR matrix IDs/versions, retrieval dates, and SHA-256 checksums here. Do not commit licensed or very large reference files unless permitted.

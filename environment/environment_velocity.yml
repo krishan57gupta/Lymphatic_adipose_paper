@@ -1,0 +1,23 @@
+name: foxc2_velocity
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.9.18
+  - pip
+  - jupyterlab
+  - numpy
+  - pandas
+  - scipy
+  - matplotlib
+  - anndata
+  - scanpy=1.8.2
+  - pip:
+      - scvelo==0.3.1
+      - cellrank==2.0.7
+      - velocyto==0.17.17
+      - mebocost==1.2.0
+
+# Replace this hand-written specification with:
+# conda env export --no-builds > environment_velocity.yml
+# from the exact environment that generated the final results.
