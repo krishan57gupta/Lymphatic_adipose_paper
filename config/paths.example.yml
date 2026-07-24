@@ -1,0 +1,24 @@
+# Copy this file to config/paths.yml and replace every placeholder.
+# The original analysis scripts/notebooks contain local path variables.
+# Update those variables using the corresponding values below before execution.
+
+project_root: /absolute/path/to/Lymphatic_adipose_paper
+geo_accession: GSE251702
+geo_reviewer_token: PROVIDED_IN_MANUSCRIPT
+
+cellranger:
+  executable: /absolute/path/to/cellranger-7.1.0/cellranger
+  transcriptome: /absolute/path/to/refdata-gex-mm10-2020-A
+  fastq_root: /absolute/path/to/downloaded_fastq
+  output_root: /absolute/path/to/cellranger_outputs
+
+velocyto:
+  executable: /absolute/path/to/velocyto
+  gtf: /absolute/path/to/refdata-gex-mm10-2020-A/genes/genes.gtf
+  output_root: /absolute/path/to/loom_files
+
+analysis:
+  processed_root: /absolute/path/to/processed_outputs
+  figure_root: /absolute/path/to/figures
+  motif_fasta: /absolute/path/to/mm10.fa
+  motif_database: /absolute/path/to/JASPAR_motifs

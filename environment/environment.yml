@@ -1,0 +1,25 @@
+name: lymphatic-adipose
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.9.18
+  - jupyterlab
+  - notebook
+  - numpy
+  - pandas
+  - scipy
+  - matplotlib
+  - seaborn
+  - networkx
+  - requests
+  - pip
+  - pip:
+      - scanpy==1.8.2
+      - scvelo==0.3.1
+      - cellrank==2.0.7
+      - anndata
+      - mebocost==1.2.0
+      - adjustText
+      - pyfaidx==0.9.0.3
+      - biopython==1.85

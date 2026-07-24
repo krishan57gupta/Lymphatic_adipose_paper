@@ -1,8 +1,0 @@
-figure_panel	tissue	analysis	script_or_notebook	input_files	output_files	status
-[Fig. X]	intestine	QC/preprocessing	scripts/01_preprocessing/03_intestine/SCA_Intestine_count2processdData_Final.R	Cell Ranger count matrices	[figure/source data]	COMPLETE_ME
-[Fig. X]	intestine	downstream R analysis	scripts/02_downstream/intestine/SCA_Intestine_dataAnalysis_Final.R	processed Seurat object	[figure/source data]	COMPLETE_ME
-[Fig. X]	intestine	RNA velocity/CellRank	scripts/02_downstream/cellrank/Velo_Rank_Intestine_Final.ipynb	processed object + 4 loom files	[figure/source data]	COMPLETE_ME
-[Fig. X]	intestine	MEBOCOST	scripts/02_downstream/mebocost/MEBOCOST_Intestine_Final.ipynb	processed expression/metadata	[figure/source data]	COMPLETE_ME
-[Fig. X]	mesentery	preprocessing and R figures	scripts/01_preprocessing/04_mesentery/SCA_Mesentery_combined_Final.R	Cell Ranger count matrices	[figure/source data]	COMPLETE_ME
-[Fig. X]	mesentery	RNA velocity/CellRank	scripts/02_downstream/cellrank/Velo_Rank_Mesentery_Final.ipynb	processed object + 2 loom files	[figure/source data]	COMPLETE_ME
-[Fig. X]	both	motif scanning	scripts/02_downstream/motif/bindingMotif_F.ipynb	FASTA/GTF/JASPAR motifs	[figure/source data]	COMPLETE_ME

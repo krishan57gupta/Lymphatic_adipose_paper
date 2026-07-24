@@ -1,255 +1,410 @@
-# FOXC2 lymphatic endothelial cell single-cell analysis
+# Lymphatic_adipose_paper
 
-This repository contains the analysis code and reproducibility documentation for the intestine and mesentery single-cell RNA-sequencing analyses described in the associated manuscript. It is structured to address the Nature Portfolio **Code and Software Submission Checklist**.
+Code supporting the single-cell RNA-sequencing, RNA-velocity, CellRank,
+metabolite-mediated communication, and transcription-factor motif analyses
+for the lymphatic adipose study.
 
-> **Important:** Large data files are not included in this ZIP. Add the two processed Seurat objects, six loom files, source-data tables, and any controlled-access/raw-data links before submission. See `DATA_MANIFEST.tsv` and the placeholder README files inside the data folders.
+## Data availability
 
-## Workflow overview
+No raw or processed biological data are stored in this GitHub repository.
+
+The raw FASTQ files and processed data are deposited under the private GEO
+accession **GSE251702**. During peer review, reviewers should use the private
+reviewer token supplied in the manuscript. The token is intentionally not
+repeated in this public code repository.
+
+Do not commit FASTQ, BAM, loom, H5AD, RDS, count-matrix, or other large data
+files to GitHub. The included `.gitignore` excludes these formats.
+
+## Analysis overview
 
 ```text
-FASTQ files
-   |-- Cell Ranger v7.1.0 --> filtered count matrices + BAM files
-   |                              |
-   |                              |-- Seurat preprocessing/QC/integration/clustering
-   |                              |       |-- processed Seurat objects
-   |                              |
-   |                              |-- velocyto v0.17.17 --> six loom files
-   |                                                     |
-   |                                                     |-- scVelo + CellRank
-   |
-   |-- downstream R/Python analyses --> manuscript figures and source data
+Private GEO GSE251702
+        |
+        v
+Raw FASTQ files
+        |
+        |  Cell Ranger 7.1.0, mouse mm10 reference
+        v
+Cell Ranger output
+  - filtered_feature_bc_matrix/
+  - possorted_genome_bam.bam
+        |                           |
+        |                           | velocyto 0.17.17
+        |                           v
+        |                       loom files
+        v                           |
+Seurat preprocessing               |
+  - QC and filtering               |
+  - normalization/integration      |
+  - PCA/UMAP/clustering            |
+  - cell-type annotation           |
+  - processed Seurat objects       |
+        |                           |
+        | export metadata, counts, |
+        | PCA, genes and barcodes   |
+        +-------------+-------------+
+                      |
+                      v
+             scVelo + CellRank
+                      |
+                      v
+              transition results
+
+Processed Seurat expression/metadata
+        |
+        +--> MEBOCOST
+        |
+        +--> CellChat / DEG / GO / manuscript figures
+
+Configured genomic sequence + motifs
+        |
+        +--> motif scanning
 ```
 
-### Study-specific organization
-
-- **Intestine:** two biological datasets/replicate batches, producing four loom files (WT and LOF for each dataset).
-- **Mesentery:** one dataset, producing two loom files (WT and LOF).
-- `SCA_Intestine_count2processdData_Final.R` starts from Cell Ranger count matrices and generates the processed intestine Seurat object.
-- `SCA_Intestine_dataAnalysis_Final.R` starts from that processed object and performs downstream R analyses and figure generation.
-- `SCA_Mesentery_combined_Final.R` performs mesentery preprocessing and downstream R analyses.
-- Separate notebooks/scripts perform RNA velocity, CellRank, MEBOCOST, and motif scanning.
-
-## Repository layout
+## Repository contents
 
 ```text
-.
+Lymphatic_adipose_paper/
 ├── README.md
 ├── LICENSE
 ├── CITATION.cff
-├── CODE_AVAILABILITY.md
-├── DATA_AVAILABILITY.md
-├── DATA_MANIFEST.tsv
-├── FIGURE_SCRIPT_MAP.tsv
-├── MANUAL_VALUES_LOG.tsv
+├── .gitignore
+├── commands/
+│   ├── 01_cellranger_count.sh
+│   ├── 02_velocyto_run10x.sh
+│   └── 03_run_r_pipeline.sh
 ├── config/
+│   └── paths.example.yml
 ├── environment/
-├── data/
-├── metadata/
-├── processed_data/
-├── scripts/
-├── source_data/
-├── expected_output/
-├── figures/
-├── supplementary/
-└── docs/
+│   ├── environment.yml
+│   ├── R_packages.txt
+│   └── install_R_packages.R
+└── scripts/
+    ├── 00_preprocessing/
+    │   ├── SCA_Intestine_count2processdData_Final.R
+    │   ├── SCA_Intestine_dataAnalysis_Final.R
+    │   └── SCA_Mesentery_combined_Final.R
+    ├── 01_seurat_export/
+    │   ├── RNA_Velocity_Intestine_Final.R
+    │   └── RNA_Velocity_Mesentery_Final.R
+    ├── 02_velocity_cellrank/
+    │   ├── Velo_Rank_Intestine_Final.ipynb
+    │   └── Velo_Rank_Mesentery_Final.ipynb
+    ├── 03_mebocost/
+    │   └── MEBOCOST_Intestine_Final.ipynb
+    ├── 04_motif/
+    │   └── bindingMotif_F.ipynb
+    └── utils/
+        └── functions.R
 ```
 
-## System requirements
+## Software requirements
 
-### Tested software versions
+The study used the following principal versions:
 
-| Component | Version |
-|---|---:|
-| Cell Ranger | 7.1.0 |
-| velocyto | 0.17.17 |
-| R | 4.3.0 |
-| Python | 3.9.18 |
-| GraphPad Prism | 10 |
-| Seurat | 4.3.0 |
-| SeuratWrappers | 0.4.0 |
-| Scanpy | 1.8.2 |
-| scVelo | 0.3.1 |
-| Monocle3 | 1.3.1 |
-| CellRank | 2.0.7 |
-| MEBOCOST | 1.2.0 |
-| CellChat | 2.0.7 |
-| clusterProfiler | 3.18.1 |
-| org.Mm.eg.db | 3.18.0 |
-| Biopython | 1.85 |
-| pyfaidx | 0.9.0.3 |
-| JASPAR database | 2026 release |
+- Cell Ranger 7.1.0
+- R 4.3.0
+- Seurat 4.3.0
+- SeuratWrappers 0.4.0
+- Python 3.9.18
+- Scanpy 1.8.2
+- velocyto 0.17.17
+- scVelo 0.3.1
+- CellRank 2.0.7
+- Monocle3 1.3.1
+- MEBOCOST 1.2.0
+- CellChat 2.0.7
+- clusterProfiler 3.18.1
+- org.Mm.eg.db 3.18.0
+- Biopython 1.85
+- pyfaidx 0.9.0.3
+- JASPAR 2026 motif resources
 
-### Operating system and hardware
+The scripts also load plotting and data-manipulation packages listed in
+`environment/R_packages.txt`.
 
-Fill in the exact tested systems before submission:
+## Hardware recommendations
 
-- Operating system: `[Linux distribution/version or macOS version]`
-- CPU: `[model and number of cores]`
-- RAM: `[GB]`
-- Storage required for the complete workflow: `[GB/TB]`
-- GPU: not required unless one was used in your actual workflow.
+Minimum practical configuration:
 
-Cell Ranger, velocyto, and full single-cell analyses can require substantially more memory and storage than the reduced demonstration workflow.
+- Linux or macOS
+- 8 CPU cores
+- 64 GB RAM
+- sufficient disk space for FASTQ, Cell Ranger, BAM, loom, RDS, and H5AD files
+
+RNA-velocity dynamical modeling is configured with `n_jobs=8` in the supplied
+notebooks. Larger datasets may require more memory and temporary storage.
 
 ## Installation
+
+### Cell Ranger and velocyto
+
+Install Cell Ranger 7.1.0 according to the 10x Genomics instructions and make
+the executable available on the command line. Install velocyto 0.17.17 in a
+compatible Python environment.
+
+Verify:
+
+```bash
+cellranger --version
+velocyto --help
+```
 
 ### Python environment
 
 ```bash
-conda env create -f environment/environment_velocity.yml
-conda activate foxc2_velocity
-python -m pip install -r environment/requirements_motif.txt
+conda env create -f environment/environment.yml
+conda activate lymphatic-adipose
+python -c "import scanpy, scvelo, cellrank; print('Python environment ready')"
 ```
 
-Record the actual installation time on the tested machine in `docs/TESTED_SYSTEMS.md`.
+MEBOCOST may require installation according to the version-specific upstream
+instructions if its dependencies are not resolved automatically.
 
 ### R environment
 
-```r
-install.packages("renv")
-renv::restore()
-```
-
-The supplied `renv.lock.template` is a starting template. Replace it with a lockfile generated from the exact analysis environment:
+Start R 4.3.0 from the repository root:
 
 ```r
-renv::snapshot()
-writeLines(capture.output(sessionInfo()), "environment/sessionInfo.txt")
+source("environment/install_R_packages.R")
+sessionInfo()
 ```
 
-## Required input files
+Install the exact CellChat and Monocle3 versions used in the study when those
+parts of the analysis are reproduced.
 
-### Raw and Cell Ranger outputs
+## Configuration before running
 
-For each sample, the Cell Ranger output directory should contain at least:
+1. Copy the path template:
+
+```bash
+cp config/paths.example.yml config/paths.yml
+```
+
+2. Replace every placeholder in `config/paths.yml`.
+
+3. Open each R script and notebook and replace its original absolute local
+   paths (`mainDir`, `dataDir`, `processedDataDir`, `plotDir`, and related
+   variables) with paths on the new system.
+
+The supplied code represents the original analysis and therefore contains
+machine-specific absolute paths. The YAML file documents the values that need
+to be mapped, but the original scripts do not automatically read YAML.
+
+4. In R scripts that use shared plotting/helper functions, set:
+
+```r
+source("scripts/utils/functions.R")
+```
+
+or adjust the existing `source()` path to this location.
+
+## Complete execution order
+
+### Step 1 — Obtain the private data
+
+Download the raw FASTQ files from **GSE251702** using the reviewer token stated
+in the manuscript. Also download any processed reference files needed to
+compare or resume downstream analyses.
+
+### Step 2 — Generate Cell Ranger count matrices
+
+Run `commands/01_cellranger_count.sh` once for every sample after replacing the
+placeholders. Cell Ranger produces:
 
 ```text
-outs/filtered_feature_bc_matrix/
-outs/possorted_genome_bam.bam
+<RUN_ID>/outs/filtered_feature_bc_matrix/
+<RUN_ID>/outs/possorted_genome_bam.bam
 ```
 
-Raw FASTQ files do not need to be duplicated in GitHub when deposited in a suitable public repository. Add accession numbers and links to `DATA_AVAILABILITY.md`.
+The filtered matrix is the input to the Seurat preprocessing scripts. The BAM
+file is the input to velocyto.
 
-### Processed objects and loom files
+### Step 3 — Generate loom files
 
-Place or externally archive:
+Run `commands/02_velocyto_run10x.sh` once per Cell Ranger run. The expected
+output is:
 
 ```text
-processed_data/intestine/combined_Intestine_ABC_F.rds
-processed_data/intestine/loom/<four intestine loom files>
-processed_data/mesentery/combined_Mesentery_ABC_F.rds
-processed_data/mesentery/loom/<two mesentery loom files>
+<RUN_ID>/velocyto/<RUN_ID>.loom
 ```
 
-If these files exceed GitHub's limits, deposit them in Zenodo, Figshare, Dryad, or another appropriate repository and list the persistent links and checksums in `DATA_MANIFEST.tsv`.
+The intestine analysis uses four loom files because it contains two replicate
+datasets for each condition. The mesentery analysis uses two loom files.
 
-## Running the analysis
-
-### 1. Cell Ranger
-
-Edit `config/project_config.sh`, then run the commands in:
+### Step 4 — Run intestine Seurat preprocessing
 
 ```bash
-bash scripts/01_preprocessing/01_cellranger/run_cellranger_template.sh
+Rscript scripts/00_preprocessing/SCA_Intestine_count2processdData_Final.R
 ```
 
-The file is a template because sample identifiers, FASTQ paths, and transcriptome reference paths must match your deposited data.
+This script reads Cell Ranger count matrices, creates Seurat objects, performs
+quality control, normalization, integration, PCA, UMAP, neighbor graph
+construction, clustering, annotation, and saves the processed intestine Seurat
+object.
 
-### 2. velocyto
+The implemented analysis includes retention of cells with 200–2500 detected
+genes, exclusion of cells with more than 30% mitochondrial reads, PCA/UMAP on
+30 dimensions, and clustering at the configured resolution. Confirm all
+parameters against the final manuscript and script before publication.
 
-Use:
+### Step 5 — Run intestine downstream analyses and figures
 
 ```bash
-bash scripts/01_preprocessing/02_velocyto/run_velocyto_template.sh
+Rscript scripts/00_preprocessing/SCA_Intestine_dataAnalysis_Final.R
 ```
 
-Expected output: one `.loom` file per sample/dataset combination.
+This script loads the processed intestine object and performs downstream
+analyses and figure generation. It uses helper functions from
+`scripts/utils/functions.R`; update the `source()` path accordingly.
 
-### 3. Intestine preprocessing
+### Step 6 — Run mesentery processing and analyses
 
 ```bash
-Rscript scripts/01_preprocessing/03_intestine/SCA_Intestine_count2processdData_Final.R
+Rscript scripts/00_preprocessing/SCA_Mesentery_combined_Final.R
 ```
 
-Expected output: processed intestine Seurat object plus QC and clustering outputs. Before running, replace the placeholder project root in the script or use the path instructions in `config/README.md`.
+This combined script performs mesentery preprocessing and downstream analyses
+from Cell Ranger count matrices through manuscript outputs.
 
-### 4. Intestine downstream analysis
+### Step 7 — Export Seurat information for Python
+
+Run:
 
 ```bash
-Rscript scripts/02_downstream/intestine/SCA_Intestine_dataAnalysis_Final.R
+Rscript scripts/01_seurat_export/RNA_Velocity_Intestine_Final.R
+Rscript scripts/01_seurat_export/RNA_Velocity_Mesentery_Final.R
 ```
 
-### 5. Mesentery analysis
+These bridge scripts export the information required to connect Seurat with
+the Python RNA-velocity notebooks, including:
+
+- cell metadata (`metadataF.csv`)
+- expression/count information
+- PCA coordinates
+- gene names (`gene_namesF.csv`)
+- cell barcodes
+
+Keep the exported cell barcodes consistent with the loom-file barcode format.
+The Python notebooks subset and merge these exported cells with the spliced and
+unspliced matrices from velocyto.
+
+### Step 8 — Run scVelo and CellRank
+
+Start Jupyter:
 
 ```bash
-Rscript scripts/01_preprocessing/04_mesentery/SCA_Mesentery_combined_Final.R
-```
-
-### 6. RNA velocity, CellRank, MEBOCOST, and motif analysis
-
-Open the corresponding notebooks in JupyterLab:
-
-```bash
+conda activate lymphatic-adipose
 jupyter lab
 ```
 
-Execute notebooks in their saved order after updating input/output paths according to `config/README.md`.
+Run all cells in this order:
 
-## Demonstration
+1. `scripts/02_velocity_cellrank/Velo_Rank_Intestine_Final.ipynb`
+2. `scripts/02_velocity_cellrank/Velo_Rank_Mesentery_Final.ipynb`
 
-Nature requests a small real or simulated dataset, expected output, and run-time information. The directory `data/demo/` contains instructions and placeholders. Because no small demo dataset was provided in the current upload, this repository includes a **demo specification rather than fabricated biological data**.
+Before running, update:
 
-Before peer review, add either:
+- the project/data directories
+- the four intestine loom filenames
+- the two mesentery loom filenames
+- processed-output and plot directories
 
-1. a small subset of real cells/genes that can be shared, or
-2. a simulated count matrix and metadata that exercise the code without being interpreted biologically.
+The notebooks:
 
-Document the expected outputs and measured run time in `expected_output/demo/README.md` and `docs/TESTED_SYSTEMS.md`.
+1. reconstruct an AnnData object from Seurat-exported counts, metadata, genes,
+   barcodes, and PCA coordinates;
+2. read and merge the matching loom files;
+3. filter and normalize spliced/unspliced counts;
+4. calculate moments;
+5. recover dynamical parameters;
+6. estimate dynamical RNA velocity;
+7. construct CellRank velocity and connectivity kernels;
+8. calculate transition/fate results and export plots or numerical values.
 
-## Values transferred between programs
+Important notebook parameters include:
 
-Some Python-derived values (for example, CellRank fate probabilities or RNA-velocity summaries) and MEBOCOST-derived values were recorded and then used in R to create publication-quality plots. This is acceptable only when the transfer is fully traceable.
+```python
+scv.pp.filter_and_normalize(
+    adata,
+    min_shared_counts=20,
+    n_top_genes=2000,
+    subset_highly_variable=True
+)
+scv.tl.recover_dynamics(adata, n_jobs=8)
+scv.tl.velocity(adata, mode="dynamical")
+```
 
-Use `MANUAL_VALUES_LOG.tsv` to record:
+Some CellRank probabilities used in publication-quality R plots were copied
+from the computed notebook outputs. These values should be exported to a CSV
+file, rather than manually retyped, whenever the final repository is revised.
 
-- source notebook and cell/output location;
-- exact numerical values or exported table;
-- destination R script and figure;
-- whether values were copied manually or imported from a file;
-- verification performed.
+### Step 9 — Run MEBOCOST
 
-**Best practice:** export these values directly to CSV/TSV from Python and read them in R. Do not rely only on manually typed numbers.
+Run all cells in:
 
-## Figure reproduction
+```text
+scripts/03_mebocost/MEBOCOST_Intestine_Final.ipynb
+```
 
-`FIGURE_SCRIPT_MAP.tsv` maps manuscript figures to scripts, inputs, and outputs. Complete all rows before submission. Each quantitative figure should have an accompanying source-data table in `source_data/`.
+This notebook uses the Seurat-derived expression matrix and metadata to create
+an AnnData object and perform metabolite-mediated cell–cell communication
+analysis with MEBOCOST 1.2.0. Update its input, output, and reference-database
+paths before execution.
 
-## Manual figure editing
+Numerical communication scores used for customized R plotting should be saved
+as source-data CSV files to preserve traceability.
 
-Document unavoidable cosmetic edits in `docs/FIGURE_EDITING_NOTES.md`. Edits must not change data values, statistical results, point locations, or scientific interpretation.
+### Step 10 — Run motif analysis
 
-## Reproducibility checklist
+Run all cells in:
 
-Before submission:
+```text
+scripts/04_motif/bindingMotif_F.ipynb
+```
 
-- [ ] Replace all placeholder paths.
-- [ ] Add the two processed Seurat objects or persistent download links.
-- [ ] Add the six loom files or persistent download links.
-- [ ] Add raw-data accession numbers.
-- [ ] Add sample metadata and cell annotations.
-- [ ] Export Python/MEBOCOST-derived plot values as machine-readable tables.
-- [ ] Complete the figure-to-script map.
-- [ ] Add source data for every quantitative figure.
-- [ ] Generate `renv.lock`, `sessionInfo.txt`, and a final Conda YAML from the actual environments.
-- [ ] Record exact operating system, hardware, installation time, and run times.
-- [ ] Add a small demo dataset and expected outputs.
-- [ ] Run the repository on a clean machine or ask an unfamiliar colleague to test it.
-- [ ] Create a tagged release and archive it in a DOI-minting repository.
+Configure:
+
+- the mouse mm10 reference FASTA
+- target promoter or genomic coordinates
+- JASPAR 2026 motif inputs
+- the output directory
+
+The notebook uses pyfaidx and Biopython motif utilities to retrieve sequence
+and scan transcription-factor binding motifs.
+
+## Input–output connection table
+
+| Stage | File | Main input | Main output / next stage |
+|---|---|---|---|
+| Cell Ranger | `commands/01_cellranger_count.sh` | GEO FASTQ | filtered count matrix and BAM |
+| velocyto | `commands/02_velocyto_run10x.sh` | Cell Ranger output and mm10 GTF | loom files |
+| Intestine preprocessing | `SCA_Intestine_count2processdData_Final.R` | intestine count matrices | processed intestine Seurat RDS |
+| Intestine analysis | `SCA_Intestine_dataAnalysis_Final.R` | processed intestine Seurat RDS | downstream results and figures |
+| Mesentery pipeline | `SCA_Mesentery_combined_Final.R` | mesentery count matrices | processed object, analyses and figures |
+| Intestine export | `RNA_Velocity_Intestine_Final.R` | processed intestine Seurat RDS | metadata/count/PCA/gene/barcode files |
+| Mesentery export | `RNA_Velocity_Mesentery_Final.R` | processed mesentery Seurat RDS | metadata/count/PCA/gene/barcode files |
+| Intestine velocity/rank | `Velo_Rank_Intestine_Final.ipynb` | intestine exports and four loom files | H5AD, velocity and CellRank results |
+| Mesentery velocity/rank | `Velo_Rank_Mesentery_Final.ipynb` | mesentery exports and two loom files | H5AD, velocity and CellRank results |
+| Metabolic communication | `MEBOCOST_Intestine_Final.ipynb` | expression and metadata exports | MEBOCOST scores and plots |
+| Motif analysis | `bindingMotif_F.ipynb` | FASTA, coordinates and motifs | motif matches and plots |
+
+## Reproducibility notes
+
+- The repository intentionally excludes all biological data.
+- Reviewer access is through private GEO accession GSE251702.
+- Never place the reviewer token in a public GitHub commit.
+- Replace all machine-specific paths before running.
+- Preserve sample names and barcode transformations exactly across Seurat and
+  loom files.
+- Run the scripts in the documented order.
+- Record `sessionInfo()` and `conda env export` after final validation.
+- Export CellRank and MEBOCOST numerical outputs to source-data tables when
+  they are replotted in R.
+- Cosmetic figure editing may change labels, fonts, dimensions, or colors, but
+  must not alter the underlying values or statistical results.
 
 ## License
 
-The repository currently includes a BSD 3-Clause License template. Confirm institutional ownership and licensing requirements before public release.
-
-## Citation
-
-Update `CITATION.cff` with the final manuscript title, author list, repository URL, release version, and DOI.
+BSD 3-Clause License. See `LICENSE`.

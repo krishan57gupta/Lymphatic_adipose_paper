@@ -1,3 +1,0 @@
-record_id	analysis	source_file	source_cell_or_output	value_file	destination_script	figure_panel	transfer_method	verification	notes
-1	CellRank fate probability	scripts/02_downstream/cellrank/Velo_Rank_Intestine_Final.ipynb	[notebook cell/output]	source_data/[exported_values].csv	scripts/02_downstream/intestine/SCA_Intestine_dataAnalysis_Final.R	[figure]	CSV import preferred	[checked by]	Do not rely only on manually typed values
-2	MEBOCOST summary	scripts/02_downstream/mebocost/MEBOCOST_Intestine_Final.ipynb	[notebook cell/output]	source_data/[exported_values].csv	scripts/02_downstream/intestine/SCA_Intestine_dataAnalysis_Final.R	[figure]	CSV import preferred	[checked by]	Record exact transformation and rounding

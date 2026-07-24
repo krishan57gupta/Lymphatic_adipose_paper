@@ -1,7 +1,0 @@
-tissue,dataset_or_batch,condition,replicate,cellranger_id,loom_filename,processed_object
-intestine,dataset_1,WT-HFD,1,[fill],[fill],combined_Intestine_ABC_F.rds
-intestine,dataset_1,LOF-HFD,1,[fill],[fill],combined_Intestine_ABC_F.rds
-intestine,dataset_2,WT-HFD,2,[fill],[fill],combined_Intestine_ABC_F.rds
-intestine,dataset_2,LOF-HFD,2,[fill],[fill],combined_Intestine_ABC_F.rds
-mesentery,dataset_1,WT-HFD,1,[fill],[fill],combined_Mesentery_ABC_F.rds
-mesentery,dataset_1,LOF-HFD,1,[fill],[fill],combined_Mesentery_ABC_F.rds

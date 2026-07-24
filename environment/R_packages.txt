@@ -1,0 +1,30 @@
+R version: 4.3.0
+
+Core packages used by the supplied scripts:
+Seurat 4.3.0
+SeuratWrappers 0.4.0
+CellChat 2.0.7
+clusterProfiler 3.18.1
+org.Mm.eg.db 3.18.0
+reticulate
+Matrix
+ggplot2
+ggrastr
+ggpubr
+export
+Hmisc
+stringr
+MASS
+scales
+ggbreak
+cowplot
+dplyr
+tidyr
+tidygraph
+ggraph
+patchwork
+ggridges
+extrafont
+
+Install Bioconductor packages using BiocManager and CRAN packages using
+install.packages(). Record the exact installed versions with sessionInfo().

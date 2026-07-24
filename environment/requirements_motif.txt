@@ -1,6 +1,0 @@
-biopython==1.85
-pyfaidx==0.9.0.3
-numpy
-pandas
-matplotlib
-jupyterlab
