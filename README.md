@@ -24,8 +24,9 @@ Raw FASTQ files
 Cell Ranger output
   - filtered_feature_bc_matrix/
   - possorted_genome_bam.bam
+        +-----------------------------------+
         |                                   |
-        |                                   | velocyto 0.17.17
+        |                                   | velocyto 0.17.17, (mouse genes.gtf + repeat-mask GTF)
         |                                   v
         |                               loom files
         v                                   |
@@ -215,20 +216,19 @@ placeholders. Cell Ranger produces:
 <RUN_ID>/outs/possorted_genome_bam.bam
 ```
 
-The filtered matrix is the input to the Seurat preprocessing scripts. The BAM 
-file and filtered matrix are the input to velocyto.
+The filtered feature-barcode matrix is the input to the Seurat preprocessing scripts. The Cell Ranger BAM file and the filtered cell-barcode file (`filtered_feature_bc_matrix/barcodes.tsv.gz`) are used as inputs for velocyto.
 
-### Step 3 — Generate loom files
+### Step 3 — Generate velocyto loom files
 
-Run `commands/02_velocyto_run10x.sh` once per Cell Ranger run. The expected
-output is:
+Run `commands/02_velocyto_run10x.sh` once to process all Cell Ranger output directories listed in `SampleIDs.txt`.
 
-```text
-<RUN_ID>/velocyto/<RUN_ID>.loom
-```
+Required inputs:
+- Cell Ranger BAM (`outs/possorted_genome_bam.bam`)
+- Filtered barcodes (`outs/filtered_feature_bc_matrix/barcodes.tsv.gz`)
+- Gene annotation GTF (`<PATH_TO_CELLRANGER_REFERENCE>/genes/genes.gtf`)
+- Repeat-mask GTF (`<PATH_TO_REPEAT_MASK_GTF>/mm10_rmsk.gtf`)
 
-The intestine analysis uses four loom files because it contains two replicate
-datasets for each condition. The mesentery analysis uses two loom files.
+Load `velocyto` (v0.17.17) and `samtools` using your HPC environment. The script processes all samples listed in `SampleIDs.txt` and generates loom files for downstream scVelo and CellRank analyses.
 
 ### Step 4 — Run intestine Seurat preprocessing
 
@@ -375,7 +375,7 @@ and scan transcription-factor binding motifs.
 | Stage | File | Main input | Main output / next stage |
 |---|---|---|---|
 | Cell Ranger | `commands/01_cellranger_count.sh` | GEO FASTQ and refdata-gex-mm10-2020-A  | filtered count matrix and BAM |
-| velocyto | `commands/02_velocyto_run10x.sh` | Cell Ranger output and mm10 GTF | loom files |
+| velocyto | `commands/02_velocyto_run10x.sh` | Cell Ranger BAM, filtered cell barcodes, genes.gtf and repeat-mask GTF | loom files |
 | Intestine preprocessing | `SCA_Intestine_count2processdData_Final.R` | intestine count matrices | processed intestine Seurat RDS |
 | Intestine analysis | `SCA_Intestine_dataAnalysis_Final.R` | processed intestine Seurat RDS | downstream results and figures |
 | Mesentery pipeline | `SCA_Mesentery_combined_Final.R` | mesentery count matrices | processed object, analyses and figures |

@@ -1,10 +1,16 @@
 # Copy this file to config/paths.yml and replace every placeholder.
-# The original analysis scripts/notebooks contain local path variables.
+# The original analysis scripts and notebooks contain local path variables.
 # Update those variables using the corresponding values below before execution.
 
 project_root: /absolute/path/to/Lymphatic_switch_paper
-geo_accession: GSE251702
-geo_reviewer_token: PROVIDED_IN_MANUSCRIPT
+
+geo:
+  accession: GSE251702
+  reviewer_token: PROVIDED_IN_MANUSCRIPT
+
+samples:
+  sample_ids: /absolute/path/to/Lymphatic_switch_paper/metadata/SampleIDs.txt
+  folder_ids: /absolute/path/to/Lymphatic_switch_paper/metadata/FolderIDs.txt
 
 cellranger:
   executable: /absolute/path/to/cellranger-7.1.0/cellranger
@@ -14,11 +20,15 @@ cellranger:
 
 velocyto:
   executable: /absolute/path/to/velocyto
-  gtf: /absolute/path/to/refdata-gex-mm10-2020-A/genes/genes.gtf
+  gene_annotation_gtf: /absolute/path/to/refdata-gex-mm10-2020-A/genes/genes.gtf
+  repeat_mask_gtf: /absolute/path/to/mm10_rmsk.gtf
+  cellranger_output_root: /absolute/path/to/cellranger_outputs
   output_root: /absolute/path/to/loom_files
 
 analysis:
   processed_root: /absolute/path/to/processed_outputs
   figure_root: /absolute/path/to/figures
-  motif_fasta: /absolute/path/to/mm10.fa
+
+motif:
+  reference_fasta: /absolute/path/to/mm10.fa
   motif_database: /absolute/path/to/JASPAR_motifs
