@@ -63,7 +63,7 @@ Configured genomic sequence + motifs
 ## Repository contents
 
 ```text
-Lymphatic_adipose_paper/
+Lymphatic_switch_paper/
 ├── README.md
 ├── LICENSE
 ├── CITATION.cff
