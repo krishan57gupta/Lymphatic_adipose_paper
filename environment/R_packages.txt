@@ -1,11 +1,11 @@
-R version: 4.3.0
+R version: 4.0.3
 
 Core packages used by the supplied scripts:
 Seurat 4.3.0
-SeuratWrappers 0.4.0
+SeuratWrappers 0.3.0
 CellChat 2.0.7
 clusterProfiler 3.18.1
-org.Mm.eg.db 3.18.0
+org.Mm.eg.db 3.12.0
 reticulate
 Matrix
 ggplot2
