@@ -1,4 +1,4 @@
-# Lymphatic_adipose_paper
+# Lymphatic_switch_paper
 
 Code supporting the single-cell RNA-sequencing, RNA-velocity, Monocle, CellRank,
 metabolite-mediated communication, GO enrichment pathways analysis, and transcription-factor motif analyses
