@@ -374,7 +374,7 @@ and scan transcription-factor binding motifs.
 
 | Stage | File | Main input | Main output / next stage |
 |---|---|---|---|
-| Cell Ranger | `commands/01_cellranger_count.sh` | GEO FASTQ | filtered count matrix and BAM |
+| Cell Ranger | `commands/01_cellranger_count.sh` | GEO FASTQ and refdata-gex-mm10-2020-A  | filtered count matrix and BAM |
 | velocyto | `commands/02_velocyto_run10x.sh` | Cell Ranger output and mm10 GTF | loom files |
 | Intestine preprocessing | `SCA_Intestine_count2processdData_Final.R` | intestine count matrices | processed intestine Seurat RDS |
 | Intestine analysis | `SCA_Intestine_dataAnalysis_Final.R` | processed intestine Seurat RDS | downstream results and figures |
