@@ -6,15 +6,10 @@ for the lymphatic adipose study.
 
 ## Data availability
 
-No raw or processed biological data are stored in this GitHub repository.
-
 The raw FASTQ files and processed data are deposited under the private GEO
 accession **GSE251702**. During peer review, reviewers should use the private
 reviewer token supplied in the manuscript. The token is intentionally not
 repeated in this public code repository.
-
-Do not commit FASTQ, BAM, loom, H5AD, RDS, count-matrix, or other large data
-files to GitHub. The included `.gitignore` excludes these formats.
 
 ## Analysis overview
 
@@ -29,33 +24,36 @@ Raw FASTQ files
 Cell Ranger output
   - filtered_feature_bc_matrix/
   - possorted_genome_bam.bam
-        |                           |
-        |                           | velocyto 0.17.17
-        |                           v
-        |                       loom files
-        v                           |
-Seurat preprocessing               |
-  - QC and filtering               |
-  - normalization/integration      |
-  - PCA/UMAP/clustering            |
-  - cell-type annotation           |
-  - processed Seurat objects       |
-        |                           |
-        | export metadata, counts, |
-        | PCA, genes and barcodes   |
-        +-------------+-------------+
-                      |
-                      v
-             scVelo + CellRank
-                      |
-                      v
-              transition results
+        |                                   |
+        |                                   | velocyto 0.17.17
+        |                                   v
+        |                               loom files
+        v                                   |
+Seurat preprocessing                        |
+  - QC and filtering                        |
+  - normalization/integration               |
+  - integration with batch correction       |
+  - PCA/UMAP/clustering                     |
+  - cell-type annotation                    |
+  - processed Seurat objects                |
+        |                                   |
+        | export metadata, counts,          |                
+        | PCA, genes and barcodes           |
+        +------------------+----------------+
+                           |
+                           v
+                    scVelo + CellRank
+                           |
+                           v
+            RNA velocity and transition results
 
 Processed Seurat expression/metadata
         |
         +--> MEBOCOST
         |
-        +--> CellChat / DEG / GO / manuscript figures
+        +--> CellChat / DEG / GO enrichment/ Monocle /manuscript figures
+        |
+        +--> Statistical analysis
 
 Configured genomic sequence + motifs
         |
