@@ -1,7 +1,7 @@
 # Lymphatic_adipose_paper
 
-Code supporting the single-cell RNA-sequencing, RNA-velocity, CellRank,
-metabolite-mediated communication, and transcription-factor motif analyses
+Code supporting the single-cell RNA-sequencing, RNA-velocity, Monocle, CellRank,
+metabolite-mediated communication, GO enrichment pathways analysis, and transcription-factor motif analyses
 for the lymphatic adipose study.
 
 ## Data availability
@@ -124,12 +124,12 @@ The scripts also load plotting and data-manipulation packages listed in
 
 ## Hardware recommendations
 
-Minimum practical configuration:
+Practical configuration tested on:
 
-- Linux or macOS
+- macOS
 - 8 CPU cores
 - 64 GB RAM
-- sufficient disk space for FASTQ, Cell Ranger, BAM, loom, RDS, and H5AD files
+- 1TB HD
 
 RNA-velocity dynamical modeling is configured with `n_jobs=8` in the supplied
 notebooks. Larger datasets may require more memory and temporary storage.
@@ -169,8 +169,7 @@ source("environment/install_R_packages.R")
 sessionInfo()
 ```
 
-Install the exact CellChat and Monocle3 versions used in the study when those
-parts of the analysis are reproduced.
+Install the exact CellChat and Monocle3 versions used in the study
 
 ## Configuration before running
 
@@ -216,8 +215,8 @@ placeholders. Cell Ranger produces:
 <RUN_ID>/outs/possorted_genome_bam.bam
 ```
 
-The filtered matrix is the input to the Seurat preprocessing scripts. The BAM
-file is the input to velocyto.
+The filtered matrix is the input to the Seurat preprocessing scripts. The BAM 
+file and filtered matrix are the input to velocyto.
 
 ### Step 3 — Generate loom files
 
@@ -335,8 +334,7 @@ scv.tl.velocity(adata, mode="dynamical")
 ```
 
 Some CellRank probabilities used in publication-quality R plots were copied
-from the computed notebook outputs. These values should be exported to a CSV
-file, rather than manually retyped, whenever the final repository is revised.
+from the computed notebook outputs.
 
 ### Step 9 — Run MEBOCOST
 
