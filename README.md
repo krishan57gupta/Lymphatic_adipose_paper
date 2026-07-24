@@ -19,7 +19,7 @@ Private GEO GSE251702
         v
 Raw FASTQ files
         |
-        |  Cell Ranger 7.1.0, mouse mm10 reference
+        |  Cell Ranger 7.1.0, refdata-gex-mm10-2020-A
         v
 Cell Ranger output
   - filtered_feature_bc_matrix/
