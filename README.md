@@ -162,7 +162,7 @@ instructions if its dependencies are not resolved automatically.
 
 ### R environment
 
-Start R 4.3.0 from the repository root:
+Start R 4.0.3 from the repository root:
 
 ```r
 source("environment/install_R_packages.R")
