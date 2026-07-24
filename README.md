@@ -124,7 +124,7 @@ The scripts also load plotting and data-manipulation packages listed in
 
 ## Hardware recommendations
 
-Practical configuration tested on:
+Tested hardware configuration:
 
 - macOS
 - 8 CPU cores
