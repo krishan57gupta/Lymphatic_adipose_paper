@@ -102,9 +102,9 @@ Lymphatic_switch_paper/
 The study used the following principal versions:
 
 - Cell Ranger 7.1.0
-- R 4.3.0
+- R 4.0.3
 - Seurat 4.3.0
-- SeuratWrappers 0.4.0
+- SeuratWrappers 0.3.0
 - Python 3.9.18
 - Scanpy 1.8.2
 - velocyto 0.17.17
@@ -114,7 +114,7 @@ The study used the following principal versions:
 - MEBOCOST 1.2.0
 - CellChat 2.0.7
 - clusterProfiler 3.18.1
-- org.Mm.eg.db 3.18.0
+- org.Mm.eg.db 3.12.0
 - Biopython 1.85
 - pyfaidx 0.9.0.3
 - JASPAR 2026 motif resources
