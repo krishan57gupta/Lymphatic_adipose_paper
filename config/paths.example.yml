@@ -2,7 +2,7 @@
 # The original analysis scripts/notebooks contain local path variables.
 # Update those variables using the corresponding values below before execution.
 
-project_root: /absolute/path/to/Lymphatic_adipose_paper
+project_root: /absolute/path/to/Lymphatic_switch_paper
 geo_accession: GSE251702
 geo_reviewer_token: PROVIDED_IN_MANUSCRIPT
 
