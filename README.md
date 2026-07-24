@@ -182,9 +182,11 @@ cp config/paths.example.yml config/paths.yml
 
 2. Replace every placeholder in `config/paths.yml`.
 
-3. Open each R script and notebook and replace its original absolute local
-   paths (`mainDir`, `dataDir`, `processedDataDir`, `plotDir`, and related
-   variables) with paths on the new system.
+3. Before running any R, Python, or shell scripts, review and update all
+   directory paths, input and output file paths, file names, sample identifiers,
+   and other user-specific parameters so that they match your local computing
+   environment and data organization. This includes variables such as
+   `mainDir`, `dataDir`, `processedDataDir`, `plotDir`, and related settings.
 
 The supplied code represents the original analysis and therefore contains
 machine-specific absolute paths. The YAML file documents the values that need
@@ -240,11 +242,6 @@ This script reads Cell Ranger count matrices, creates Seurat objects, performs
 quality control, normalization, integration, PCA, UMAP, neighbor graph
 construction, clustering, annotation, and saves the processed intestine Seurat
 object.
-
-The implemented analysis includes retention of cells with 200–2500 detected
-genes, exclusion of cells with more than 30% mitochondrial reads, PCA/UMAP on
-30 dimensions, and clustering at the configured resolution. Confirm all
-parameters against the final manuscript and script before publication.
 
 ### Step 5 — Run intestine downstream analyses and figures
 
