@@ -1,4 +1,4 @@
-name: lymphatic-adipose
+name: Lymphatic-switch
 channels:
   - conda-forge
   - bioconda
